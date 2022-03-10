@@ -1,63 +1,31 @@
 extension StringExt on int {
-
-  String getMonthName(bool isJalali){
-    if(isJalali)
-      return this.jalaliMonthName;
-    else
-      return this.gregorianMonthName;
-  }
-
-  String get jalaliMonthName {
-    switch (this) {
-      case 1:
-        return "فروردین";
+  String getMonthNameWithCulture(String languageCode) {
+    switch (languageCode) {
+      case 'en':
+        return this.englishMonthName;
         break;
-      case 2:
-        return "اردیبهشت";
+      case 'de':
+        return this.germanMonthName;
         break;
-      case 3:
-        return "خرداد";
-        break;
-      case 4:
-        return "تیر";
-        break;
-      case 5:
-        return "مرداد";
-        break;
-      case 6:
-        return "شهریور";
-        break;
-      case 7:
-        return "مهر";
-        break;
-      case 8:
-        return "آبان";
-        break;
-      case 9:
-        return "آذر";
-        break;
-      case 10:
-        return "دی";
-        break;
-      case 11:
-        return "بهمن";
-        break;
-      case 12:
-        return "اسفند";
+      case 'vi':
+        return this.vietnameseMonthName;
         break;
       default:
-        return '$this';
-        break;
+        return this.englishMonthName;
     }
   }
 
-  String get gregorianMonthName {
+  String get vietnameseMonthName {
+    return "Tháng ${this.toString()}";
+  }
+
+  String get englishMonthName {
     switch (this) {
       case 1:
-        return "Jan";
+        return "January";
         break;
       case 2:
-        return "Feb";
+        return "February";
         break;
       case 3:
         return "March";
@@ -66,7 +34,7 @@ extension StringExt on int {
         return "April";
         break;
       case 5:
-        return "May";
+        return "April";
         break;
       case 6:
         return "June";
@@ -78,16 +46,60 @@ extension StringExt on int {
         return "August";
         break;
       case 9:
-        return "Sep";
+        return "September";
         break;
       case 10:
-        return "Oct";
+        return "October";
         break;
       case 11:
-        return "Nov";
+        return "November";
         break;
       case 12:
-        return "Dec";
+        return "December";
+        break;
+      default:
+        return '$this';
+        break;
+    }
+  }
+
+  String get germanMonthName {
+    switch (this) {
+      case 1:
+        return "Januar";
+        break;
+      case 2:
+        return "Februar";
+        break;
+      case 3:
+        return "Februar";
+        break;
+      case 4:
+        return "April";
+        break;
+      case 5:
+        return "Mai";
+        break;
+      case 6:
+        return "Juni";
+        break;
+      case 7:
+        return "Juli";
+        break;
+      case 8:
+        return "August";
+        break;
+      case 9:
+        return "September";
+        break;
+      case 10:
+        return "Oktober";
+        break;
+      case 11:
+        return "November";
+        break;
+      case 12:
+        return "Dezember";
         break;
       default:
         return '$this';

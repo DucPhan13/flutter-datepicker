@@ -21,8 +21,8 @@ class LinearDatePicker extends StatefulWidget {
 
   final bool showLabels;
   final double columnWidth;
-  final bool isJalaali;
   final bool showMonthName;
+  final String? languageCode;
 
   LinearDatePicker({
     this.startDate = "",
@@ -38,8 +38,8 @@ class LinearDatePicker extends StatefulWidget {
     this.dayText = "روز",
     this.showLabels = true,
     this.columnWidth = 55.0,
-    this.isJalaali = false,
     this.showMonthName = false,
+    this.languageCode = 'en',
   });
 
   @override
@@ -63,13 +63,8 @@ class _LinearDatePickerState extends State<LinearDatePicker> {
   @override
   initState() {
     super.initState();
-    if (widget.isJalaali) {
-      minYear = Jalali.now().year - 100;
-      maxYear = Jalali.now().year;
-    } else {
-      minYear = Gregorian.now().year - 100;
-      maxYear = Gregorian.now().year;
-    }
+    minYear = Gregorian.now().year - 100;
+    maxYear = Gregorian.now().year;
     if (widget.initialDate.isNotEmpty) {
       List<String> initList = widget.initialDate.split("/");
       _selectedYear = int.parse(initList[0]);
@@ -77,17 +72,11 @@ class _LinearDatePickerState extends State<LinearDatePicker> {
       if (widget.showDay)
         _selectedDay = int.parse(initList[2]);
       else
-        _selectedDay = widget.isJalaali ? Jalali.now().day : Jalali.now().day;
-    } else {
-      if (widget.isJalaali) {
-        _selectedYear = Jalali.now().year;
-        _selectedMonth = Jalali.now().month;
-        _selectedDay = Jalali.now().day;
-      } else {
-        _selectedYear = Gregorian.now().year;
-        _selectedMonth = Gregorian.now().month;
         _selectedDay = Gregorian.now().day;
-      }
+    } else {
+      _selectedYear = Gregorian.now().year;
+      _selectedMonth = Gregorian.now().month;
+      _selectedDay = Gregorian.now().day;
     }
   }
 
@@ -159,7 +148,7 @@ class _LinearDatePickerState extends State<LinearDatePicker> {
                 selectedRowStyle: widget.selectedRowStyle,
                 unselectedRowStyle: widget.unselectedRowStyle,
                 isShowMonthName: widget.showMonthName,
-                isJalali: widget.isJalaali,
+                languageCode: widget.languageCode,
                 onChanged: (value) {
                   setState(() {
                     _selectedMonth = value as int?;
@@ -195,29 +184,15 @@ class _LinearDatePickerState extends State<LinearDatePicker> {
   }
 
   _getMonthLength(int? selectedYear, int? selectedMonth) {
-    if (widget.isJalaali) {
-      if (selectedMonth! <= 6) {
-        return 31;
-      }
-      if (selectedMonth > 6 && selectedMonth < 12) {
-        return 30;
-      }
-      if (Jalali(selectedYear!).isLeapYear()) {
-        return 30;
-      } else {
-        return 29;
-      }
+    DateTime firstOfNextMonth;
+    if (selectedMonth == 12) {
+      firstOfNextMonth = DateTime(selectedYear! + 1, 1, 1, 12); //year, selectedMonth, day, hour
     } else {
-      DateTime firstOfNextMonth;
-      if (selectedMonth == 12) {
-        firstOfNextMonth = DateTime(selectedYear! + 1, 1, 1, 12); //year, selectedMonth, day, hour
-      } else {
-        firstOfNextMonth = DateTime(selectedYear!, selectedMonth! + 1, 1, 12);
-      }
-      int numberOfDaysInMonth = firstOfNextMonth.subtract(Duration(days: 1)).day;
-      //.subtract(Duration) returns a DateTime, .day gets the integer for the day of that DateTime
-      return numberOfDaysInMonth;
+      firstOfNextMonth = DateTime(selectedYear!, selectedMonth! + 1, 1, 12);
     }
+    int numberOfDaysInMonth = firstOfNextMonth.subtract(Duration(days: 1)).day;
+    //.subtract(Duration) returns a DateTime, .day gets the integer for the day of that DateTime
+    return numberOfDaysInMonth;
   }
 
   int _getMinimumMonth() {

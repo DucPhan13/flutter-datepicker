@@ -41,7 +41,7 @@ class NumberPicker extends StatelessWidget {
     this.selectedRowStyle,
     this.unselectedRowStyle,
     this.isShowMonthName = false,
-    this.isJalali = false,
+    this.languageCode = 'en',
   })  : assert(maxValue >= minValue),
         // assert(initialValue >= minValue && initialValue <= maxValue),
         assert(step > 0),
@@ -129,11 +129,11 @@ class NumberPicker extends StatelessWidget {
   ///Set unselected numbers font color
   final TextStyle? unselectedRowStyle;
 
-  //Show month name instead of month int place in the year
+  ///Show month name instead of month int place in the year
   final bool? isShowMonthName;
 
-  //isJalali for get the month right name
-  final bool? isJalali;
+  ///Languagecode for get the month right name
+  final String? languageCode;
 
   //
   //----------------------------- PUBLIC ------------------------------
@@ -216,7 +216,7 @@ class NumberPicker extends StatelessWidget {
                       ? Container() //empty first and last element
                       : Center(
                           child: Text(
-                            getDisplayedValue(value),
+                            getDisplayedValue(value, languageCode),
                             style: itemStyle,
                           ),
                         );
@@ -237,7 +237,7 @@ class NumberPicker extends StatelessWidget {
 
   String getDisplayedValue(int value) {
     if (isShowMonthName!) {
-      return value.getMonthName(isJalali!);
+      return value.getMonthName(languageCode);
     } else {
       final text = zeroPad ? value.toString().padLeft(maxValue.toString().length, '0') : value.toString();
       return textMapper != null ? textMapper!(text) : text;
@@ -389,7 +389,6 @@ class NumberPickerDialog extends StatefulWidget {
   final bool haptics;
 
   final bool isShowMonthName;
-  final bool isJalali;
 
   ///constructor for integer values
   NumberPickerDialog.integer({
@@ -408,7 +407,6 @@ class NumberPickerDialog extends StatefulWidget {
     Widget? confirmWidget,
     Widget? cancelWidget,
     this.isShowMonthName = false,
-    this.isJalali = false,
   })  : confirmWidget = confirmWidget ?? Text("OK"),
         cancelWidget = cancelWidget ?? Text("CANCEL"),
         decimalPlaces = 0,
@@ -429,7 +427,6 @@ class NumberPickerDialog extends StatefulWidget {
     Widget? confirmWidget,
     Widget? cancelWidget,
     this.isShowMonthName = false,
-    this.isJalali = false,
   })  : confirmWidget = confirmWidget ?? Text("OK"),
         cancelWidget = cancelWidget ?? Text("CANCEL"),
         initialIntegerValue = -1,
