@@ -1,10 +1,9 @@
 import 'dart:math' as math;
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'month_name_handler.dart';
+import 'package:flutter_linear_datepicker/month_name_handler.dart';
 
 /// Created by Marcin Szałek
 
@@ -216,7 +215,7 @@ class NumberPicker extends StatelessWidget {
                       ? Container() //empty first and last element
                       : Center(
                           child: Text(
-                            getDisplayedValue(value, languageCode),
+                            getDisplayedValue(value),
                             style: itemStyle,
                           ),
                         );
@@ -237,7 +236,7 @@ class NumberPicker extends StatelessWidget {
 
   String getDisplayedValue(int value) {
     if (isShowMonthName!) {
-      return value.getMonthName(languageCode);
+      return value.getMonthNameWithCulture(languageCode ?? 'en');
     } else {
       final text = zeroPad ? value.toString().padLeft(maxValue.toString().length, '0') : value.toString();
       return textMapper != null ? textMapper!(text) : text;
