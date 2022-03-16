@@ -54,7 +54,7 @@ extension StringExt on int {
       case 2:
         return "Februar";
       case 3:
-        return "Februar";
+        return "März";
       case 4:
         return "April";
       case 5:
